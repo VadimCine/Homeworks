@@ -8,7 +8,7 @@ import asyncio
 
 from module_13_2 import start
 
-api = "7701027879:AAHCWlz67A3rRVjM5ts7ybe5DfPDhhyfIzw"
+api = ""
 bot = Bot(token=api)
 db = Dispatcher(bot, storage = MemoryStorage())
 
@@ -38,7 +38,7 @@ async def set_weight(message, state):
 async def send_calories(message, state):
     await state.update_data(weight=message.text)
     data = await state.get_data()
-    result = float(10 * int(data['weight']) + 6.25 * int(data['growth']) - 5 * int(data['age']) + 5)
+    result = float(10 * int(data['weight']) + 6.25 * int(data['growth']) - 5 * int(data['age']) + 5)   #делаем вариант для мужчин
     await message.answer(f'Ваша норма калорий - {result}')
     await state.finish()
 
