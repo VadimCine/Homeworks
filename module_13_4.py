@@ -17,6 +17,11 @@ class UserState(StatesGroup):
     growth = State()
     weight = State()
 
+@db.message_handler(commands=["start"])
+async def start(message):
+    #print("Привет! Я бот помогающий твоему здоровью.")
+    await message.answer("Привет! Я бот помогающий твоему здоровью.")
+
 @db.message_handler(text = "Calories")
 async def set_age(message):
     await message.answer("Введите свой возраст:")
@@ -34,11 +39,16 @@ async def set_weight(message, state):
     await message.answer("Введите свой вес:")
     await UserState.weight.set()
 
+@db.message_handler()
+async def all_message(message):
+    #print("Введите команду /start, чтобы начать общение.")
+    await message.answer("Введите команду /start, чтобы начать общение.")
+
 @db.message_handler(state = UserState.weight)
 async def send_calories(message, state):
     await state.update_data(weight=message.text)
     data = await state.get_data()
-    result = float(10 * int(data['weight']) + 6.25 * int(data['growth']) - 5 * int(data['age']) + 5)   #делаем вариант для мужчин
+    result = float(10 * int(data['weight']) + 6.25 * int(data['growth']) - 5 * int(data['age']) + 5)
     await message.answer(f'Ваша норма калорий - {result}')
     await state.finish()
 
